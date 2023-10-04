@@ -1,1 +1,1 @@
-{"name":"UserBG","description":"Plugin for custom profile colour","authors":[{"name":"ifsvivek","id":"471320666075824134"}],"main":"index.js","vendetta":{"icon":"ic_profile_24px"},"hash":"6f48c4ef4edb70bbb44350353609156a13c93c5b44b23215934ba2b90f5d33dc"}
+{"name":"Profile colour","description":"Plugin for custom profile colour","authors":[{"name":"ifsvivek","id":"471320666075824134"}],"main":"index.js","vendetta":{"icon":"ic_profile_24px"},"hash":"6f48c4ef4edb70bbb44350353609156a13c93c5b44b23215934ba2b90f5d33dc"}
