@@ -14,6 +14,7 @@ export default () => (<ScrollView>
             label="Discord Server"
             leading={<FormRow.Icon source={getAssetIDByName("Discord")} />}
             trailing={FormRow.Arrow}
+            onPress={() => url.openDeeplink("https://discord.gg/PYYvU3qnMv")}
         />
         <FormRow
             label="Reload DB"
