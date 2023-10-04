@@ -1,14 +1,14 @@
 {
-    "name": "Template Plugin",
-    "description": "A plugin for use as a template.",
+    "name": "UserBG",
+    "description": "this is test plugin",
     "authors": [
         {
-            "name": "You!",
-            "id": "YOUR_ID_HERE"
+            "name": "ifsvivek",
+            "id": "471320666075824134"
         }
     ],
-    "main": "src/index.ts",
+    "main": "src/index.tsx",
     "vendetta": {
-        "icon": "ic_badge_staff"
+        "icon": "ic_profile_24px"
     }
 }
