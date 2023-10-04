@@ -1,0 +1,14 @@
+{
+    "name": "UserPFP",
+    "description": "Plugin for custom PFP",
+    "authors": [
+        {
+            "name": "ifsvivek",
+            "id": "471320666075824134"
+        }
+    ],
+    "main": "src/index.tsx",
+    "vendetta": {
+        "icon": "ic_profile_24px"
+    }
+}
