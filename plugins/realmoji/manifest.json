@@ -1,0 +1,14 @@
+{
+    "name": "Realmoji",
+    "description": "Makes freemojis real",
+    "authors": [
+        {
+            "name": "ifsvivek",
+            "id": "471320666075824134"
+        }
+    ],
+    "main": "src/index.ts",
+    "vendetta": {
+        "icon": "ic_profile_24px"
+    }
+}

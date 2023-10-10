@@ -10,3 +10,6 @@ For Custom PFP
 
 For Custom Profile Colour
 `https://ifsvivek.github.io/discord/colour`
+
+To make Freemoji real
+`https://ifsvivek.github.io/discord/realmoji`
