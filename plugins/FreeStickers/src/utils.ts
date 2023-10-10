@@ -14,5 +14,5 @@ export function isStickerAvailable(sticker, channelId) {
 export function buildStickerURL(baseURL, sticker) {
   return baseURL 
     .replace("{stickerId}", sticker.id)
-    .replace("{extension}", "png");
+    .replace("{extension}", "gif");
 }
