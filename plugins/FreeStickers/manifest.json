@@ -1,0 +1,14 @@
+{
+  "name": "FreeStickers",
+  "description": "Lets you use stickers without Nitro.",
+  "authors": [
+    {
+      "name": "ifsvivek",
+      "id": "471320666075824134"
+  }
+  ],
+  "main": "src/index.ts",
+  "vendetta": {
+    "icon": "ic_sticker_24px"
+  }
+}
