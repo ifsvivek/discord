@@ -2,7 +2,7 @@
 
 Paste a plugin URL into the Plugins page of Vendetta:
 
-For Custom Banner
+For Custom Banner(Not Working )
 `https://ifsvivek.github.io/discord/ubg`
 
 For Custom PFP
