@@ -53,7 +53,7 @@ export default async () => {
               badge
                 ? {
                     id: "usrpfp-custom",
-                    description: `${username}'s custom USRPFP badge`,
+                    description: `${username}'s custom badge`,
                     icon: badgeIconPrefix + badge,
                   }
                 : emptySymbol,
