@@ -1,24 +1,44 @@
-import { safeFetch } from "@vendetta/utils";
-import { DataFile } from "../types";
-import { dataURL, enabled } from "..";
 import { logger } from "@vendetta";
 import { findByProps, findByStoreName } from "@vendetta/metro";
 import { after } from "@vendetta/patcher";
+import { getAssetIDByName } from "@vendetta/ui/assets";
+import { showToast } from "@vendetta/ui/toasts";
+import { safeFetch } from "@vendetta/utils";
+
+import { dataURL, enabled, hash, lang, staticGifURL } from "..";
+import { DataFile } from "../types";
 
 const avatarStuff = findByProps("getUserAvatarURL", "getUserAvatarSource");
-const badgeStuff = findByProps("getBadgeAsset");
 
-const UserProfileStore = findByStoreName("UserProfileStore");
 const UserStore = findByStoreName("UserStore");
 
 let data: DataFile;
 const fetchData = async () => {
   try {
-    data = await (await safeFetch(dataURL, { cache: "no-store" })).json();
+    data = await (
+      await safeFetch(`${dataURL}?_=${hash}`, { cache: "no-store" })
+    ).json();
   } catch (e) {
-    logger.error(`Failed to fetch avatars!\n${e.stack}`);
+    const txt = lang.format("log.fetch_error", {});
+    console.error(`[UsrPFP] ${txt}`);
+    logger.error(`${txt}\n${e.stack}`);
+
+    showToast(lang.format("toast.fetch_error", {}), getAssetIDByName("Small"));
   }
 };
+
+const getCustomAvatar = (id: string, isStatic?: boolean) => {
+  if (!data.avatars[id]) return;
+
+  const avatar = data.avatars[id];
+  if (isStatic && urlExt(avatar) === "gif") return staticGifURL(avatar);
+
+  const url = new URL(avatar);
+  url.searchParams.append("_", hash);
+  return url.toString();
+};
+
+const urlExt = (url: string) => new URL(url).pathname.split(".").slice(-1)[0];
 
 export default async () => {
   const patches = new Array<() => void>();
@@ -30,45 +50,27 @@ export default async () => {
   patches.push(() => clearInterval(dataInterval));
 
   patches.push(
-    after("getUserAvatarURL", avatarStuff, ([{ id }]) => data.avatars[id])
-  );
-  patches.push(
-    after("getUserAvatarSource", avatarStuff, ([{ id }], ret) =>
-      data.avatars[id] ? { uri: data.avatars[id] } : ret
-    )
+    after("getUser", UserStore, ([id], ret) => {
+      const ext = data.avatars[id] && urlExt(data.avatars[id]);
+      if (ext === "gif" && ret) {
+        const avatar = ret.avatar ?? "0";
+        ret.avatar = !avatar.startsWith("a_") ? `a_${avatar}` : avatar;
+      }
+    }),
   );
 
-  const emptySymbol = Symbol("empty");
-  const badgeIconPrefix = "usrpfp-";
-
   patches.push(
-    after("getUserProfile", UserProfileStore, ([id], ret) => {
-      const username = UserStore.getUser(id)?.username;
-      const badge = data.badges[id] ?? data.badges[username];
-
-      return ret
-        ? {
-            ...ret,
-            badges: [
-              badge
-                ? {
-                    id: "usrpfp-custom",
-                    description: `${username}'s custom badge`,
-                    icon: badgeIconPrefix + badge,
-                  }
-                : emptySymbol,
-              ...ret.badges,
-            ].filter((x) => x !== emptySymbol),
-          }
-        : ret;
-    })
+    after("getUserAvatarURL", avatarStuff, ([{ id }, animate]) =>
+      getCustomAvatar(id, !animate),
+    ),
   );
   patches.push(
-    after("getBadgeAsset", badgeStuff, ([icon]: [string], ret) =>
-      icon.startsWith(badgeIconPrefix)
-        ? icon.slice(badgeIconPrefix.length)
-        : ret
-    )
+    after("getUserAvatarSource", avatarStuff, ([{ id }, animate], ret) => {
+      const custom = getCustomAvatar(id, !animate);
+      if (!custom) return;
+
+      return custom ? { uri: custom } : ret;
+    }),
   );
 
   return () => patches.forEach((x) => x());
